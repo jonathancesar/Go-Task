@@ -1,7 +1,13 @@
-<form class="rounded-xl overflow-hidden bg-white">
+<form
+  class="rounded-xl overflow-hidden bg-white"
+  [formGroup]="TaskForm"
+  (ngSubmit)="onFormSubmit()"
+>
   <div class="flex gap-1 items-center p-4">
     <img src="images/icon-new-task.svg" />
-    <h1 class="font-semibold text-lg">Criar/Editar Tarefa</h1>
+    <h1 class="font-semibold text-lg">
+      {{ (_data.mode === "create" ? "Criar" : "Editar") + " tarefa" }}
+    </h1>
     <img class="ml-auto cursor-pointer" src="images/icon-close.svg" />
   </div>
   <div class="p-4 border-y border-[#D1D5DB] flex flex-col gap-4">
@@ -11,6 +17,7 @@
         class="w-full border border-[#D1D5DB] p-3 rounded-lg text-sm font-light text-[#89919F]"
         type="text"
         placeholder="Descreva o que deverá ser feito"
+        formControlName="name"
       />
       <p class="font-semibold text-sm text-red-500">
         O campo é obrigatório e precisa ter no mínimo 10 caracteres.
@@ -22,6 +29,7 @@
         class="w-full border border-[#D1D5DB] p-3 rounded-lg text-sm font-light text-[#89919F]"
         type="text"
         placeholder="Adicione uma descrição"
+        formControlName="description"
       />
       <p class="font-semibold text-sm text-red-500">
         O campo é obrigatório e precisa ter no mínimo 10 caracteres.
@@ -35,11 +43,17 @@
     >
       Cancelar
     </button>
+    <!-- dentro backticks doCaso seja inválido ficará cinza o botão, se for habilitado ficará azul-->
     <button
-      class="py-3 px-4 bg-[#2A89EF] text-white rounded-xl text-sm font-semibold cursor-pointer active:translate-y-1 transition-transform duration-75 shadow-md shadow-blue-500/50"
+      class="{{ `py-3 px-4 rounded-xl  text-white  text-sm font-semibold cursor-pointer ${ 
+        TaskForm.invalid 
+        ? 'bg-[#D7D8D8]' 
+        : 'bg-[#2A89EF] active:translate-y-1 transition-transform duration-75 shadow-md shadow-blue-500/50'
+      }` }}"
       type="submit"
+      [disabled]="TaskForm.invalid"
     >
-      Criar uma tarefa
+      {{ _data.mode === "create" ? "Criar uma tarefa" : "Salvar Alterações" }}
     </button>
   </div>
 </form>
