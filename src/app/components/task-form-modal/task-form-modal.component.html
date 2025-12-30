@@ -8,7 +8,11 @@
     <h1 class="font-semibold text-lg">
       {{ (_data.mode === "create" ? "Criar" : "Editar") + " tarefa" }}
     </h1>
-    <img class="ml-auto cursor-pointer" src="images/icon-close.svg" />
+    <img
+      class="ml-auto cursor-pointer"
+      src="images/icon-close.svg"
+      (click)="closeModal()"
+    />
   </div>
   <div class="p-4 border-y border-[#D1D5DB] flex flex-col gap-4">
     <div>
@@ -19,9 +23,11 @@
         placeholder="Descreva o que deverá ser feito"
         formControlName="name"
       />
-      <p class="font-semibold text-sm text-red-500">
-        O campo é obrigatório e precisa ter no mínimo 10 caracteres.
-      </p>
+      @if (TaskForm.get("name")?.touched && TaskForm.get("name")?.invalid) {
+        <p class="font-semibold text-sm text-red-500">
+          O campo é obrigatório e precisa ter no mínimo 10 caracteres.
+        </p>
+      }
     </div>
     <div>
       <p class="font-semibold text-sm mb-2">Descrição</p>
@@ -31,15 +37,21 @@
         placeholder="Adicione uma descrição"
         formControlName="description"
       />
-      <p class="font-semibold text-sm text-red-500">
-        O campo é obrigatório e precisa ter no mínimo 10 caracteres.
-      </p>
+      @if (
+        TaskForm.get("description")?.touched &&
+        TaskForm.get("description")?.invalid
+      ) {
+        <p class="font-semibold text-sm text-red-500">
+          O campo é obrigatório e precisa ter no mínimo 10 caracteres.
+        </p>
+      }
     </div>
   </div>
   <div class="p-4 flex justify-end gap-2">
     <button
       class="py-3 px-4 bg-[#FAFAFA] rounded-xl text-sm font-semibold cursor-pointer active:translate-y-1 transition-transform duration-75"
       type="button"
+      (click)="closeModal()"
     >
       Cancelar
     </button>

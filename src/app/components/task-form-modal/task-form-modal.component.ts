@@ -1,4 +1,4 @@
-import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { ITaskFormModalData } from '../../interfaces/task-form-modal-data.interface';
 import {
@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ITaskFormControls } from '../../interfaces/task-form-controls.interface';
 
 @Component({
   selector: 'app-task-form-modal',
@@ -16,6 +17,7 @@ import {
 })
 export class TaskFormModalComponent {
   readonly _data: ITaskFormModalData = inject(DIALOG_DATA);
+  readonly _dialogRef = inject(DialogRef);
 
   TaskForm: FormGroup = new FormGroup({
     name: new FormControl(this._data.formValues.name, [
@@ -29,6 +31,10 @@ export class TaskFormModalComponent {
   });
 
   onFormSubmit() {
-    throw new Error('Method not implemented.');
+    this.closeModal(this.TaskForm.value);
+  }
+
+  closeModal(formValues: ITaskFormControls | undefined = undefined) {
+    this._dialogRef.close(formValues);
   }
 }

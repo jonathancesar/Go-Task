@@ -16,8 +16,9 @@ export class ModalControllerService {
 
   openNewTaskModal() {
     //Para nao repetir o código Altura e largura atribuir o modalSizeOptions
-    return this._dialog.open(TaskFormModalComponent, {
+    return this._dialog.open<ITaskFormControls>(TaskFormModalComponent, {
       ...this.modalSizeOptions,
+      disableClose: true,
       data: {
         mode: 'create',
         formValues: {
@@ -29,8 +30,9 @@ export class ModalControllerService {
   }
 
   openEditTaskModal(formValues: ITaskFormControls) {
-    return this._dialog.open(TaskFormModalComponent, {
+    return this._dialog.open<ITaskFormControls>(TaskFormModalComponent, {
       ...this.modalSizeOptions,
+      disableClose: true,
       data: {
         mode: 'edit',
         formValues,
