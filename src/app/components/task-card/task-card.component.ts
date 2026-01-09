@@ -2,10 +2,11 @@ import { Component, inject, Input } from '@angular/core';
 import { ModalControllerService } from '../services/modal-controller.service';
 import { ITask } from '../../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-task-card',
-  imports: [],
+  imports: [SlicePipe],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.css',
 })
@@ -34,10 +35,24 @@ export class TaskCardComponent {
   }
 
   openTaskCommentsModal() {
-    this.task.comments = [
-      { id: '123', description: 'Meu comentário 1' },
-      { id: '456', description: 'Meu comentário 2' },
-    ];
-    this._modalControllerService.openTaskCommentsModal(this.task);
+    const dialogRef = this._modalControllerService.openTaskCommentsModal(
+      this.task,
+    );
+
+    dialogRef.closed.subscribe((taskCommentsChanged) => {
+      if (taskCommentsChanged) {
+        //atualizar a fonte de verdade
+        console.log('tarefa atualizada:', this.task);
+        this._taskService.updateTaskComments(
+          this.task.id,
+          this.task.status,
+          this.task.comments,
+        );
+      }
+    });
+  }
+
+  deleteTask() {
+    this._taskService.deleteTask(this.task.id, this.task.status);
   }
 }
